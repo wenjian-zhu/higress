@@ -322,13 +322,18 @@ func (c *claudeProvider) OnRequestHeaders(ctx wrapper.HttpContext, apiName ApiNa
 }
 
 func (c *claudeProvider) TransformRequestHeaders(ctx wrapper.HttpContext, apiName ApiName, headers http.Header) {
-	util.OverwriteRequestPathHeaderByCapability(headers, string(apiName), c.config.capabilities)
+	log.Debugf("[claudeProvider] apiName=%s ", string(apiName))
 	domain := c.config.resolveDomain("", claudeDomain)
+	log.Debugf("[claudeProvider.TransformRequestHeaders] domain=%s", domain)
 	util.OverwriteRequestHostHeader(headers, domain)
 
 	if c.config.apiVersion == "" {
 		c.config.apiVersion = claudeDefaultVersion
 	}
+	if !c.config.IsOriginal() {
+		util.OverwriteRequestPathHeaderByCapability(headers, string(apiName), c.config.capabilities)
+	}
+
 	headers.Set("anthropic-version", c.config.apiVersion)
 
 	// Check if Claude Code mode is enabled

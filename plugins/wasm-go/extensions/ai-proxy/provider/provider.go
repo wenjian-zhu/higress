@@ -1145,7 +1145,9 @@ func (c *ProviderConfig) handleRequestBody(
 	}
 
 	// use original protocol
+	log.Debugf("[request use protocol] %s", c.protocol)
 	if c.IsOriginal() {
+		log.Debugf("[skip process request body]")
 		return types.ActionContinue, nil
 	}
 
@@ -1223,6 +1225,7 @@ func (c *ProviderConfig) handleRequestBody(
 		}
 		return types.ActionContinue, err
 	}
+	log.Debugf("[final requst body] %s", body)
 	return types.ActionContinue, replaceRequestBody(body)
 }
 

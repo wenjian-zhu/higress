@@ -306,6 +306,9 @@ func onHttpRequestBody(ctx wrapper.HttpContext, pluginConfig config.PluginConfig
 		log.Debugf("[onHttpRequestBody] newBody=%s", newBody)
 		body = newBody
 		action, err := handler.OnRequestBody(ctx, apiName, body)
+
+		log.Debugf("[onHttpRequestBody] headers=%s", util.GetRequestHeaders())
+
 		if err == nil {
 			return action
 		}

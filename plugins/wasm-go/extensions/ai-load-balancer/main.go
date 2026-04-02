@@ -10,6 +10,7 @@ import (
 	"github.com/alibaba/higress/plugins/wasm-go/extensions/ai-load-balancer/cluster_metrics"
 	"github.com/alibaba/higress/plugins/wasm-go/extensions/ai-load-balancer/endpoint_metrics"
 	"github.com/alibaba/higress/plugins/wasm-go/extensions/ai-load-balancer/global_least_request"
+	"github.com/alibaba/higress/plugins/wasm-go/extensions/ai-load-balancer/global_priority_request"
 	"github.com/alibaba/higress/plugins/wasm-go/extensions/ai-load-balancer/prefix_cache"
 )
 
@@ -52,6 +53,7 @@ const (
 	MetricsBasedEndpoint           = "endpoint_metrics"
 	MetricsBasedEndpointDeprecated = "metrics_based" // Compatible with old configurations, equal to `endpoint_metrics`
 	GlobalLeastRequestEndpoint     = "global_least_request"
+	GlobalPriorityRequestEndpoint  = "global_priority_request"
 	PrefixCacheEndpoint            = "prefix_cache"
 )
 
@@ -77,6 +79,8 @@ func parseConfig(json gjson.Result, config *Config) error {
 			config.lb, err = endpoint_metrics.NewMetricsEndpointLoadBalancer(json.Get("lb_config"))
 		case GlobalLeastRequestEndpoint:
 			config.lb, err = global_least_request.NewGlobalLeastRequestLoadBalancer(json.Get("lb_config"))
+		case GlobalPriorityRequestEndpoint:
+			config.lb, err = global_priority_request.NewGlobalPriorityRequestLoadBalancer(json.Get("lb_config"))
 		case PrefixCacheEndpoint:
 			config.lb, err = prefix_cache.NewPrefixCacheLoadBalancer(json.Get("lb_config"))
 		default:
